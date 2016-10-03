@@ -19,4 +19,4 @@ Route::get('/user', function (Request $request) {
 
 Route::resource('/messages', 'Api\MessagesController', [
 	'only'	=> ['store']
-]);
+])->middleware('auth:api');

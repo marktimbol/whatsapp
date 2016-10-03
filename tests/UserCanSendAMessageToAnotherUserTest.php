@@ -16,6 +16,7 @@ class UserCanSendAMessageToAnotherUserTest extends TestCase
     	$receiver = factory(App\User::class)->create();
 
     	$response = $this->post('/api/messages', [
+            'api_token' => $user->api_token,
     		'receiver_id'	=> $receiver->id,
     		'body'	=> 'Chat message'
     	]);
