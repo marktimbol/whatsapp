@@ -13,10 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function() {
+	Route::get('/user', ['as' => 'user', 'uses' => 'Api\UsersController@index']);
 
-Route::resource('/messages', 'Api\MessagesController', [
-	'only'	=> ['store']
-])->middleware('auth:api');
+	Route::resource('/messages', 'Api\MessagesController', [
+		'only'	=> ['index', 'store']
+	]);
+
+	Route::resource('/messages.replies', 'Api\RepliesController', [
+		'only'	=> ['store']
+	]);
+});

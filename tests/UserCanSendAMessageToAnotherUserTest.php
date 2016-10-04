@@ -10,19 +10,19 @@ class UserCanSendAMessageToAnotherUserTest extends TestCase
 
     public function test_an_authenticated_user_can_send_a_message_to_another_user()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
+    	$sender = factory(App\User::class)->create();
+    	$this->actingAs($sender);
 
     	$receiver = factory(App\User::class)->create();
 
-    	$response = $this->post('/api/messages', [
-            'api_token' => $user->api_token,
+    	$this->post('/api/messages', [
+            'api_token' => $sender->api_token,
     		'receiver_id'	=> $receiver->id,
     		'body'	=> 'Chat message'
     	]);
 
     	$this->seeInDatabase('messages', [
-    		'sender_id'	=> $user->id,
+    		'sender_id'	=> $sender->id,
     		'receiver_id'	=> $receiver->id,
     		'body'	=> 'Chat message',
     	]);

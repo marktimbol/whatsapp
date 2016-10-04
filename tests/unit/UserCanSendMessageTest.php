@@ -19,6 +19,7 @@ class UserCanSendMessageTest extends TestCase
     	$this->actingAs($user);
 
     	$user->sendMessage('Message body')->to($receiver);
+        
     	$this->seeInDatabase('messages', [
     		'sender_id'	=> $user->id,
     		'receiver_id'	=> $receiver->id,

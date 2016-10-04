@@ -16,10 +16,16 @@ class UserCanReplyToAMessageTest extends TestCase
 
         $message = $sender->sendMessage('Hi')->to($receiver);
 
-        // Reply
+        // Login user
         $this->actingAs($receiver);
-        $receiver->replyTo($message)->replyBody('Hello');
 
+        // Send reply message
+        $reply = $this->post('/api/messages/'.$message->id.'/replies', [
+            'api_token' => $receiver->api_token,
+            'body'  => 'Hello'
+        ]);
+
+        // Check if the record persisted in the database table
         $this->seeInDatabase('replies', [
             'message_id'    => $message->id,
             'sender_id' => $receiver->id,
